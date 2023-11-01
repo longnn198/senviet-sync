@@ -1,0 +1,32 @@
+{
+  "name": "senvet-desktop-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "build": {
+    "appId": "com.yourapp.app",
+    "productName": "sync-data",
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": "nsis"
+    }
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^27.0.2",
+    "electron-builder": "^24.6.4"
+  },
+  "dependencies": {
+    "pg": "^8.11.3",
+    "pg-promise": "^11.5.4"
+  }
+}
