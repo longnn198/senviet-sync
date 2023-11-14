@@ -1,15 +1,13 @@
 document
-  .getElementById("toggle-dark-mode")
+  .getElementById("check-sync-products")
   .addEventListener("click", async () => {
-    const isDarkMode = await window.darkMode.toggle();
-    document.getElementById("theme-source").innerHTML = isDarkMode
-      ? "Dark"
-      : "Light";
+    await window.sync.checkSyncStatusOfProducts();
   });
 
 document
-  .getElementById("reset-to-system")
+  .getElementById("check-sync-customers")
   .addEventListener("click", async () => {
-    await window.darkMode.system();
-    document.getElementById("theme-source").innerHTML = "System";
+    const loadingElement = document.getElementById("loading");
+    loadingElement.style = {};
+    await window.sync.checkSyncStatusOfCustomers();
   });

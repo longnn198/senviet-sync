@@ -1,6 +1,6 @@
 const { contextBridge, ipcRenderer } = require("electron");
 
-contextBridge.exposeInMainWorld("darkMode", {
-  toggle: () => ipcRenderer.invoke("sync-products"),
-  system: () => ipcRenderer.invoke("dark-mode:system"),
+contextBridge.exposeInMainWorld("sync", {
+  checkSyncStatusOfProducts: () => ipcRenderer.invoke("check-sync-products"),
+  checkSyncStatusOfCustomers: () => ipcRenderer.invoke("check-sync-customers"),
 });

@@ -1,18 +1,30 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <meta charset="UTF-8">
-    <title>Hello World!</title>
-    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
-    <link rel="stylesheet" type="text/css" href="./styles.css">
+  <meta charset="UTF-8">
+  <title>Hello World!</title>
+  <meta http-equiv="Content-Security-Policy"
+    content="script-src 'self' 'unsafe-inline';" />
+  <link rel="stylesheet" type="text/css" href="./index.css">
+  <link rel="stylesheet" type="text/css" href="./styles.css">
 </head>
+
 <body>
-  <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Senviet</h2>
-  
-  <button id="toggle-dark-mode">Đồng bộ dữ liệu</button>
-  <button id="reset-to-system">Reset to System Theme</button>
+  <div class="app">
+    <h2 class="text-3xl font-bold underline">
+      Senviet</h2>
+    <div>
+      <button id="check-sync-products">Kiểm tra đồng bộ sản phẩm</button>
+      <button id="check-sync-customers">Kiểm tra đồng bộ khách hàng</button>
+    </div>
+
+    <div id="loading" class="loading">Loading&#8230;</div>
+  </div>
+
 
   <script src="renderer.js"></script>
-  </body>
 </body>
+</body>
+
 </html>
