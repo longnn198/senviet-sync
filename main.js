@@ -85,8 +85,8 @@ const checkSyncStatusOfProducts = async () => {
   });
 };
 
-ipcMain.handle("check-sync-products", () => {
-  checkSyncStatusOfProducts();
+ipcMain.handle("check-sync-products", async () => {
+  await checkSyncStatusOfProducts();
 });
 
 const checkSyncStatusOfCustomers = async () => {
