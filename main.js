@@ -76,7 +76,7 @@ const checkSyncStatusOfProducts = async () => {
         quantity: quantity,
         unit: unit.trim(),
       }));
-      await axios.patch("https://sv.c2web3.com/sync-products", {
+      await axios.patch("http://localhost:8080/sync-products", {
         products: products,
       });
 
@@ -94,7 +94,7 @@ const checkSyncStatusOfCustomers = async () => {
     SELECT ma_kh as phone,ten_kh as name,dia_chi as address
     FROM dmkh
     `;
-
+  console.log("cmm");
   sql.open(connectionString, async (err, conn) => {
     if (err) {
       console.error("Error connecting: ", err);
@@ -111,11 +111,9 @@ const checkSyncStatusOfCustomers = async () => {
         address: address.trim(),
       }));
       const customerCSV = converter.json2csv(customer);
-
-      await axios.patch("https://sv.c2web3.com/sync-customer", {
+      await axios.patch("http://localhost:8080/sync-customer", {
         csv: customerCSV,
       });
-
       console.log("Check product synchronization status");
     });
   });

@@ -7,7 +7,5 @@ document
 document
   .getElementById("check-sync-customers")
   .addEventListener("click", async () => {
-    const loadingElement = document.getElementById("loading");
-    loadingElement.style = {};
     await window.sync.checkSyncStatusOfCustomers();
   });
