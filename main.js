@@ -1,6 +1,13 @@
-const axios = require("axios");
-const { app, BrowserWindow, ipcMain, Notification } = require("electron");
-const path = require("node:path");
+const {
+  app,
+  BrowserWindow,
+  Tray,
+  Menu,
+  Notification,
+  ipcMain,
+} = require("electron");
+const path = require("path");
+const localShortcut = require("electron-localshortcut");
 const sql = require("msnodesqlv8");
 const pgp = require("pg-promise")();
 const db = pgp(
@@ -8,33 +15,90 @@ const db = pgp(
 );
 let converter = require("json-2-csv");
 const cron = require("node-cron");
+const axios = require("axios");
+
+let tray = null;
+let mainWindow = null;
+let isQuitting = false;
 
 function createWindow() {
-  const win = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
+    show: false,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
+      nodeIntegration: true,
     },
-    icon: path.join(__dirname, "logo_deo.jpg"),
   });
-  win.loadFile("index.html");
-  win.webContents.openDevTools();
+
+  mainWindow.loadFile("index.html");
+  mainWindow.webContents.openDevTools();
+  mainWindow.on("close", (event) => {
+    if (!isQuitting) {
+      event.preventDefault();
+      mainWindow.hide();
+    }
+  });
+
+  mainWindow.on("closed", () => {
+    mainWindow = null;
+  });
+
+  localShortcut.register(mainWindow, "Ctrl+Shift+I", () => {
+    if (mainWindow.isVisible()) {
+      mainWindow.hide();
+    } else {
+      mainWindow.show();
+    }
+  });
+}
+
+function createTray() {
+  const iconPath = path.join(__dirname, "logo_deo.jpg");
+  tray = new Tray(iconPath);
+
+  const contextMenu = Menu.buildFromTemplate([
+    {
+      label: "Show App",
+      click: () => {
+        mainWindow.show();
+      },
+    },
+    {
+      label: "Quit",
+      click: () => {
+        isQuitting = true;
+        app.quit();
+      },
+    },
+  ]);
+
+  tray.setToolTip("Your Electron App");
+  tray.setContextMenu(contextMenu);
+  tray.on("click", () => {
+    if (mainWindow.isVisible()) {
+      mainWindow.hide();
+    } else {
+      mainWindow.show();
+    }
+  });
 }
 
 app.whenReady().then(() => {
+  createTray();
   createWindow();
-
-  app.on("activate", () => {
-    if (BrowserWindow.getAllWindows().length === 0) {
-      createWindow();
-    }
-  });
 });
 
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
     app.quit();
+  }
+});
+
+app.on("activate", () => {
+  if (mainWindow === null) {
+    createWindow();
   }
 });
 
