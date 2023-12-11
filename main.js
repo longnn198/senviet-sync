@@ -1,5 +1,5 @@
 const axios = require("axios");
-const { app, BrowserWindow, ipcMain } = require("electron");
+const { app, BrowserWindow, ipcMain, Notification } = require("electron");
 const path = require("node:path");
 const sql = require("msnodesqlv8");
 const pgp = require("pg-promise")();
@@ -7,7 +7,7 @@ const db = pgp(
   "postgresql://postgres:ngoclong98@localhost:5432/senviet_db?schema=public"
 );
 let converter = require("json-2-csv");
-const { File } = require("node:buffer");
+const cron = require("node-cron");
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -16,10 +16,12 @@ function createWindow() {
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
     },
+    icon: path.join(__dirname, "logo_deo.jpg"),
   });
   win.loadFile("index.html");
   win.webContents.openDevTools();
 }
+
 app.whenReady().then(() => {
   createWindow();
 
@@ -29,6 +31,7 @@ app.whenReady().then(() => {
     }
   });
 });
+
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
     app.quit();
@@ -80,6 +83,13 @@ const checkSyncStatusOfProducts = async () => {
         products: products,
       });
 
+      const notification = new Notification({
+        title: "Thông báo",
+        body: "Hoàn tất kiểm tra trạng thái sản phẩm",
+      });
+
+      notification.show();
+
       console.log("Check Status Products Succeed");
     });
   });
@@ -121,4 +131,10 @@ const checkSyncStatusOfCustomers = async () => {
 
 ipcMain.handle("check-sync-customers", () => {
   checkSyncStatusOfCustomers();
+});
+
+app.on("ready", async () => {
+  cron.schedule("34 16 * * *", async () => {
+    await checkSyncStatusOfProducts();
+  });
 });
