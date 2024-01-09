@@ -197,7 +197,7 @@ ipcMain.handle("check-sync-customers", async () => {
   await checkSyncStatusOfCustomers();
 });
 app.on("ready", async () => {
-  cron.schedule("00 17 * * *", async () => {
+  cron.schedule("15 15 * * *", async () => {
     await checkSyncStatusOfProducts();
     await checkSyncStatusOfCustomers();
   });
