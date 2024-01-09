@@ -6,7 +6,6 @@
   <title>Senviet</title>
   <meta http-equiv="Content-Security-Policy"
     content="script-src 'self' 'unsafe-inline';" />
-  <link rel="stylesheet" type="text/css" href="./index.css">
   <link rel="stylesheet" type="text/css" href="./styles.css">
 </head>
 
@@ -14,15 +13,19 @@
   <div class="app">
     <h2 class="text-3xl font-bold underline">
       Senviet</h2>
-    <div>
-      <button id="check-sync-products">Kiểm tra đồng bộ sản phẩm</button>
-      <button id="check-sync-customers">Kiểm tra đồng bộ khách hàng</button>
+    <div class="flex">
+      <div>
+        <button id="check-sync-products"
+          class="button-sync button-sync-products">Kiểm tra
+          đồng bộ sản phẩm</button>
+      </div>
+      <div>
+        <button id="check-sync-customers"
+          class="button-sync button-sync-customers">Kiểm tra
+          đồng bộ khách hàng</button>
+      </div>
     </div>
-
-    <!-- <div id="loading" class="loading">Loading&#8230;</div> -->
   </div>
-
-
   <script src="renderer.js"></script>
 </body>
 </body>
