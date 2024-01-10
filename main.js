@@ -11,7 +11,7 @@ const localShortcut = require("electron-localshortcut");
 const sql = require("msnodesqlv8");
 const pgp = require("pg-promise")();
 const db = pgp(
-  "postgresql://postgres:ngoclong98@localhost:5432/senviet_db?schema=public"
+  "postgresql://postgres:ngoclong98@52.77.17.150:5432/senviet_db?schema=public"
 );
 let converter = require("json-2-csv");
 const cron = require("node-cron");
@@ -99,7 +99,7 @@ app.on("activate", () => {
 
 //handler
 const connectionString =
-  "server=DESKTOP-B4P3601;Database=FA11_2022;Trusted_Connection=Yes;Driver={SQL Server Native Client 10.0}";
+  "server=.\\FASTACCOUNTING;Database=FA11_2022;Trusted_Connection=Yes;Driver={SQL Server Native Client 10.0}";
 
 const showNotification = ({ title, body }) => {
   const notification = new Notification({
@@ -111,9 +111,8 @@ const showNotification = ({ title, body }) => {
 
 const checkSyncStatusOfProducts = async () => {
   mainWindow.loadFile("loading.html");
-
   const productOnApp = await db
-    .any("SELECT code FROM product")
+    .any("SELECT code FROM product WHERE not status = 'DISABLE'")
     .then((data) => {
       return data;
     })
@@ -142,7 +141,7 @@ const checkSyncStatusOfProducts = async () => {
         name: name.trim(),
         unit: unit.trim(),
       }));
-      await axios.patch("http://localhost:8080/sync-products", {
+      await axios.patch("https://sv.offchainsaigon.com/sync-products", {
         products: products,
       });
       showNotification({
